@@ -39,6 +39,11 @@ public class Main {
 
         System.out.printf("Average GPA:%.2f%n",average(gpas));
 
+
+        Student student = new Student("S001", "Amina", 3.9);
+        System.out.println(student.describe());
+        System.out.println(student.toReportLine());
+
         for (double gpa : gpas) {
             if (gpa >= 3.5) {
                 System.out.println(gpa + " -> First Class");
