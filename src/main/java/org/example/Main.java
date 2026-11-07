@@ -1,7 +1,10 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Main {
 
     public static double average(double[] scores)
@@ -40,9 +43,25 @@ public class Main {
         System.out.printf("Average GPA:%.2f%n",average(gpas));
 
 
-        Student student = new Student("S001", "Amina", 3.9);
-        System.out.println(student.describe());
-        System.out.println(student.toReportLine());
+        // Step 5: generic repository
+        Repository<Student> studentRepo = new Repository<>();
+        studentRepo.add(new Student("S001", "Usama", 3.9));
+        studentRepo.add(new Student("S002", "Ali", 3.2));
+        studentRepo.add(new Student("S003", "Mohamed", 3.6));
+        studentRepo.add(new Student("S004", "Mahir", 2.8));
+
+        System.out.println("Stored students: " + studentRepo.size());
+
+// Index by ID
+        Map<String, Student> byId = new HashMap<>();
+        for (Student st : studentRepo.findAll()) {
+            byId.put(st.getId(), st);
+        }
+
+        Student found = byId.get("S001");
+        System.out.println("Lookup S001: " + found.describe());
+        System.out.println(found.toReportLine());
+
 
         for (double gpa : gpas) {
             if (gpa >= 3.5) {

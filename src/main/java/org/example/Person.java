@@ -14,6 +14,7 @@ public abstract class Person {
     public abstract String role();
 
     public String describe() {
-        return name + "-" + role();
+        return name + " - " + role();
+
     }
 }
