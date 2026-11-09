@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -52,6 +54,38 @@ public class Main {
 
         System.out.println("Stored students: " + studentRepo.size());
 
+        // Step 6: streams
+        List<Student> all = studentRepo.findAll();
+
+        System.out.println("--- Sorted by name ---");
+        all.stream()
+                .sorted(Comparator.comparing(Student::getName))
+                .forEach(st -> System.out.println(st.describe()));
+
+        System.out.println("--- Dean's list (GPA >= 3.5) ---");
+        List<String> deansList = all.stream()
+                .filter(st -> st.getGpa() >= 3.5)
+                .sorted(Comparator.comparing(Student::getName))
+                .map(Student::getName)
+                .collect(Collectors.toList());
+        System.out.println(deansList);
+
+
+        Course cs101 = new Course("CS101", 1);
+        Student first = all.get(0);
+        Student second = all.get(1);
+
+        try {
+            enrol(first, cs101);
+            System.out.println("Enrolled " + first.getName());
+            enrol(second, cs101);
+            System.out.println("Enrolled " + second.getName());
+        } catch (EnrolmentException e) {
+            System.out.println("Could not enrol: " + e.getMessage());
+        } finally {
+            System.out.println("Enrolment attempt complete");
+        }
+
 // Index by ID
         Map<String, Student> byId = new HashMap<>();
         for (Student st : studentRepo.findAll()) {
@@ -74,6 +108,12 @@ public class Main {
                 System.out.println(gpa + " -> Pass/Fail");
             }
         }
+    }
+    public static void enrol(Student s, Course c) throws EnrolmentException {
+        if (c.isFull()) {
+            throw new EnrolmentException(c.getTitle() + " is full");
+        }
+        c.add(s);
     }
 }
 
