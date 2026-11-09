@@ -4,7 +4,10 @@ public abstract class Person {
     protected final String name;
 
     protected Person(String name) {
-        this.name = name;
+       if (name == null || name.isBlank()) {
+           throw new IllegalArgumentException("Name cannot be null or blank");
+       }
+        this.name = name.trim();
     }
 
     public String getName() {
